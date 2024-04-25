@@ -42,7 +42,7 @@ public class ManagementFavorite {
             throw new RuntimeException(e);
         }
     }
-
+    
     public void addWord(String wordType) {
         this.deleteWord(wordType);
         String sqlQuery = "INSERT INTO favorite(Id,Word) VALUES(NULL,?)";
@@ -55,6 +55,7 @@ public class ManagementFavorite {
             throw new RuntimeException(e);
         }
     }
+
 
     public Word findWord(String wordType) {
         String sqlQuery = "SELECT Word FROM favorite WHERE Word = ? COLLATE NOCASE";

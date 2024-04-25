@@ -94,6 +94,10 @@ public class GoogleTranslateAPI {
             tempt.delete(0, 2);
             tempt.delete(speechAfterTranslated.length() - 4, speechAfterTranslated.length() - 2);
             speechAfterTranslated = tempt.toString();
+            if (sourceLanguage == AUTO) {
+                tempt.delete(0, 1);
+                tempt.delete(speechAfterTranslated.length() - 7, speechAfterTranslated.length() - 1);
+            }
             return tempt.toString();
         }
         return null;

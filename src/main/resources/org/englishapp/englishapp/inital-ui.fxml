@@ -117,7 +117,7 @@
             </right>
             <left>
                 <StackPane prefHeight="650.0" prefWidth="226.0" BorderPane.alignment="CENTER">
-                    <ListView fx:id="historyList" onContextMenuRequested="#chooseFromHistoryList" prefHeight="528.0" prefWidth="200.0" style="-fx-font-family: Arial; -fx-font-size: 16px;" translateY="26.0" visible="false">
+                    <ListView fx:id="historyList" onContextMenuRequested="#chooseFromHistoryList" prefHeight="528.0" prefWidth="200.0" style="-fx-font-family: Arial; -fx-font-size: 16px;" translateY="26.0" visible="false" styleClass="game-rule-label" stylesheets="@icons/css/label.css">
                     </ListView>
                <TextField fx:id="searchHistory" onKeyTyped="#findMatchestWordFromHistory" prefHeight="26.0" prefWidth="213.0" StackPane.alignment="TOP_CENTER">
 

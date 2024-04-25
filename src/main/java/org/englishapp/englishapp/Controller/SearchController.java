@@ -148,20 +148,25 @@ public class SearchController implements Initializable, InterfaceController {
     }
 
     public void handleClickOnSave() {
-        System.out.printf("Value of searched word: %s\n", this.generalAppController.searchedWord);
-        if (this.generalAppController.searchedWord == null) {
+        System.out.printf("Value of searched word: %s\n", this.generalAppController.searchBar.getText());
+        if (this.generalAppController.searchBar.getText() == null) {
             return;
         }
-        String favoriteWord = this.generalAppController.searchedWord;
+        String favoriteWord = this.generalAppController.searchBar.getText();
         if (this.generalAppController.managementFavorite.isExist(favoriteWord)) {
-            this.generalAppController.handleNotification("Error", "Word existed");
+            this.displayAlert("Confirm","This word existed in favorite list, do you want to remove it ?");
+            if(this.buttonYesStatus != 1){
+                return;
+            }
+            this.generalAppController.managementFavorite.deleteWord(favoriteWord);
+            this.generalAppController.handleSuccessNotification("Successfully Update","Complete removing from your favorite list");
         } else {
             this.displayAlert("Confirm", "Are you sure ?");
             if(this.buttonYesStatus != 1){
                 return;
             }
             this.generalAppController.managementFavorite.addWord(favoriteWord);
-            this.generalAppController.handleSuccessNotification();
+            this.generalAppController.handleSuccessNotification("Successfully Update","Complete adding to your favorite list");
         }
     }
 

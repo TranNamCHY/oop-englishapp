@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
@@ -7,57 +8,44 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-
 <?import javafx.scene.text.Font?>
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="595.0" prefWidth="1092.0"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.englishapp.englishapp.Controller.GoogleTranslateController">
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="595.0" prefWidth="1092.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.englishapp.englishapp.Controller.GoogleTranslateController">
     <top>
         <StackPane prefHeight="91.0" prefWidth="1092.0" BorderPane.alignment="CENTER">
             <children>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <ChoiceBox fx:id="firstLanguageChoiceBox" prefWidth="150.0" translateX="160.0" translateY="40.0"
-                                   styleClass="language-dropdown" stylesheets="@icons/css/language-dropdown.css"
-                                   onAction="#handleDuplicateChoice1"/>
-                        <StackPane prefHeight="120.0" prefWidth="78.0" scaleX="0.9" scaleY="0.9" translateX="345.0"
-                                   onMouseClicked="#handleTranslate" styleClass="utility-button"
-                                   stylesheets="@icons/css/utility-button.css">
+                  <Button fx:id="ChooseImageButton" mnemonicParsing="false" onAction="#ClickChooseImage" styleClass="utility-button" stylesheets="@icons/css/utility-button.css" text="Choose an image from your pc" translateX="20.0" translateY="50.0">>
+
+                  </Button>
+                        <ChoiceBox fx:id="firstLanguageChoiceBox" onAction="#handleDuplicateChoice1" prefWidth="150.0" styleClass="language-dropdown" stylesheets="@icons/css/language-dropdown.css" translateX="80.0" translateY="40.0" />
+                        <StackPane onMouseClicked="#handleTranslate" prefHeight="120.0" prefWidth="78.0" scaleX="0.9" scaleY="0.9" styleClass="utility-button" stylesheets="@icons/css/utility-button.css" translateX="162.0">
                             <children>
-                                <ImageView fitHeight="108.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true"
-                                           scaleX="0.9" scaleY="0.9">
+                                <ImageView fitHeight="108.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9" scaleY="0.9" translateX="-2.0">
                                     <image>
-                                        <Image url="@icons/decoration/double_arrow_right.png"/>
+                                        <Image url="@icons/decoration/double_arrow_right.png" />
                                     </image>
                                 </ImageView>
                             </children>
                         </StackPane>
-                        <ChoiceBox fx:id="secondLanguageChoiceBox" prefWidth="150.0" translateX="530.0"
-                                   translateY="40.0" styleClass="language-dropdown"
-                                   stylesheets="@icons/css/language-dropdown.css"
-                                   onAction="#handleDuplicateChoice2"/>
+                        <ChoiceBox fx:id="secondLanguageChoiceBox" onAction="#handleDuplicateChoice2" prefWidth="150.0" styleClass="language-dropdown" stylesheets="@icons/css/language-dropdown.css" translateX="340.0" translateY="40.0" />
                     </children>
                 </HBox>
             </children>
         </StackPane>
     </top>
     <left>
-        <TextArea fx:id="leftTextArea" prefHeight="450.0" prefWidth="450.0" translateX="20.0" translateY="-10.0"
-                  styleClass="text-area"
-                  stylesheets="@icons/css/text-areas.css" wrapText="true"
-                  BorderPane.alignment="CENTER">
+        <TextArea fx:id="leftTextArea" prefHeight="450.0" prefWidth="450.0" styleClass="text-area" stylesheets="@icons/css/text-areas.css" translateX="20.0" translateY="-10.0" wrapText="true" BorderPane.alignment="CENTER">
             <font>
-                <Font size = "20"/>
+                <Font size="20" />
             </font>
         </TextArea>
     </left>
     <right>
-        <TextArea fx:id="rightTextArea" prefHeight="450.0" prefWidth="450.0" translateX="-20.0" translateY="-10.0"
-                  styleClass="text-area"
-                  stylesheets="@icons/css/text-areas.css" wrapText="true"
-                  BorderPane.alignment="CENTER">
+        <TextArea fx:id="rightTextArea" prefHeight="450.0" prefWidth="450.0" styleClass="text-area" stylesheets="@icons/css/text-areas.css" translateX="-20.0" translateY="-10.0" wrapText="true" BorderPane.alignment="CENTER">
             <font>
-                <Font size = "20"/>
+                <Font size="20" />
             </font>
         </TextArea>
     </right>

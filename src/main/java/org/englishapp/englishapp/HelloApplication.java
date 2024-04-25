@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import org.englishapp.englishapp.utils.GoogleVoiceAPI;
@@ -23,13 +24,13 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-        @Override
-        public void handle(WindowEvent windowEvent) {
-            TextToSpeech.shutDown();
-            GoogleVoiceAPI.shutdownExecutorService();
-        }
-    });
-}
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                TextToSpeech.shutDown();
+                GoogleVoiceAPI.shutdownExecutorService();
+            }
+        });
+    }
 
     public static void main(String[] args) {
         launch();

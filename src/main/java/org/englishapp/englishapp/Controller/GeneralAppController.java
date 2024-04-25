@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
@@ -117,6 +118,8 @@ public class GeneralAppController implements Initializable, InterfaceController 
     private GuessWordGameController guessWordGameController;
 
     public String searchedWord = "";
+
+    //public int buttonYesStatus;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -295,16 +298,16 @@ public class GeneralAppController implements Initializable, InterfaceController 
     }
 
     public void handleClickOnSave() {
-        System.out.printf("Value of searched word: %s\n", this.searchedWord);
+        //System.out.printf("Value of searched word: %s\n", this.searchedWord);
         if (this.searchedWord == null) {
             return;
         }
         String favoriteWord = this.searchedWord;
         if (this.managementFavorite.isExist(favoriteWord)) {
-            handleNotification("Error", "Word existed");
+            //handleNotification("Error", "Word existed");
         } else {
             this.managementFavorite.addWord(favoriteWord);
-            handleSuccessNotification();
+            handleSuccessNotification("Successfully Update","Complete adding to your favorite list");
         }
     }
 
@@ -344,6 +347,7 @@ public class GeneralAppController implements Initializable, InterfaceController 
     public void chooseFromHistoryList() {
         String wordType = (String) this.historyList.getSelectionModel().getSelectedItem();
         Word resultWord = this.handleManagement.findWord(wordType);
+        this.searchBar.setText(wordType);
         if (StateMachine.state != StateMachine.InitAndSeacrch) {
             this.loadSeacherController();
         }
@@ -355,10 +359,10 @@ public class GeneralAppController implements Initializable, InterfaceController 
         }
     }
 
-    public static void handleSuccessNotification() {
+    public static void handleSuccessNotification(String title,String text) {
         Notifications notificationBuilder = Notifications.create()
-                .title("Successfully Update")
-                .text("Complete Add")
+                .title(title)
+                .text(text)
                 .graphic(null)
                 .hideAfter(Duration.seconds(3))
                 .position(Pos.BOTTOM_LEFT);
@@ -481,6 +485,8 @@ public class GeneralAppController implements Initializable, InterfaceController 
         this.ChangeMainBorderPane(newBorderPane);
 
     }
+
+
 
     @FXML
     protected void onHelloButtonClick() {
