@@ -1,7 +1,6 @@
 package org.englishapp.englishapp.Controller;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
@@ -18,8 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
-import org.englishapp.englishapp.Management.ManagementHistoryDatabase;
-import org.englishapp.englishapp.Management.MangementDatabase;
+import org.englishapp.englishapp.Management.ManagementDictionaryDatabase;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,7 +38,7 @@ public class AddController implements Initializable {
     @FXML
     private HTMLEditor explainField;
 
-    private MangementDatabase mangementDatabase;
+    private ManagementDictionaryDatabase managementDictionaryDatabase;
     private int buttonYesStatus = 0;
     private int buttonNoStatus = 0;
 
@@ -71,8 +68,8 @@ public class AddController implements Initializable {
         notificationBuilder.showConfirm();
     }
 
-    public void setMangementDatabase(MangementDatabase mangementDatabase){
-        this.mangementDatabase = mangementDatabase;
+    public void setMangementDatabase(ManagementDictionaryDatabase managementDictionaryDatabase){
+        this.managementDictionaryDatabase = managementDictionaryDatabase;
     }
 
     public boolean checkWordField(){
@@ -81,7 +78,7 @@ public class AddController implements Initializable {
             handleNotification("Error","Empty Wordfield");
             return false;
         }
-        if(this.mangementDatabase.isExist(wordType)){
+        if(this.managementDictionaryDatabase.isExist(wordType)){
             handleNotification("Error", "Word Existed");
             return false;
         }
@@ -110,7 +107,7 @@ public class AddController implements Initializable {
         wordField,prounciation,shortDescrip);
         this.displayAlert("Cofirm","Are you sure ?");
         if(this.buttonYesStatus == 1) {
-            this.mangementDatabase.addWord(wordField, explainField, shortDescrip, prounciation);
+            this.managementDictionaryDatabase.addWord(wordField, explainField, shortDescrip, prounciation);
             handleSuccessNotification();
             this.clearFields();
         }

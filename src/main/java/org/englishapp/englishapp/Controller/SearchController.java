@@ -3,43 +3,29 @@ package org.englishapp.englishapp.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javazoom.jl.decoder.JavaLayerException;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.tools.Borders;
 import org.englishapp.englishapp.utils.TextToSpeech;
-import javafx.scene.transform.Translate;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import javafx.fxml.Initializable;
 import org.englishapp.englishapp.HelloApplication;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.englishapp.englishapp.CustomObject.Word;
-import org.englishapp.englishapp.Management.MangementDatabase;
 import org.englishapp.englishapp.utils.GoogleVoiceAPI;
-
-import javax.security.auth.login.AccountNotFoundException;
 
 public class SearchController implements Initializable, InterfaceController {
 
@@ -159,14 +145,14 @@ public class SearchController implements Initializable, InterfaceController {
                 return;
             }
             this.generalAppController.managementFavorite.deleteWord(favoriteWord);
-            this.generalAppController.handleSuccessNotification("Successfully Update","Complete removing from your favorite list");
+            InterfaceController.handleSuccessNotification("Successfully Update","Complete removing from your favorite list");
         } else {
             this.displayAlert("Confirm", "Are you sure ?");
             if(this.buttonYesStatus != 1){
                 return;
             }
             this.generalAppController.managementFavorite.addWord(favoriteWord);
-            this.generalAppController.handleSuccessNotification("Successfully Update","Complete adding to your favorite list");
+            InterfaceController.handleSuccessNotification("Successfully Update","Complete adding to your favorite list");
         }
     }
 

@@ -80,7 +80,7 @@ public class GoogleTranslateController implements Initializable {
             try {
                 result = GoogleTranslateAPI.translate(paragraph, GoogleTranslateAPI.ENGHLISH, GoogleTranslateAPI.VIETNAMESE);
             } catch (IOException | TimeoutException exception) {
-                GoogleTranslateAPI.handleNotification();
+                InterfaceController.handleTranslateFailedNotification();
                 System.out.print(exception.getMessage());
                 throw new RuntimeException();
             }
@@ -88,21 +88,21 @@ public class GoogleTranslateController implements Initializable {
             try {
                 result = GoogleTranslateAPI.translate(paragraph, GoogleTranslateAPI.VIETNAMESE, GoogleTranslateAPI.ENGHLISH);
             } catch (IOException | TimeoutException exception) {
-                GoogleTranslateAPI.handleNotification();
+                InterfaceController.handleTranslateFailedNotification();
                 throw new RuntimeException();
             }
         } else if (languageSource == this.sourceLanguage[2] && languageDest == this.destLanguage[0]) {
             try {
                 result = GoogleTranslateAPI.translate(paragraph, GoogleTranslateAPI.AUTO, GoogleTranslateAPI.ENGHLISH);
             } catch (IOException | TimeoutException exception) {
-                GoogleTranslateAPI.handleNotification();
+                InterfaceController.handleTranslateFailedNotification();
                 throw new RuntimeException();
             }
         } else if (languageSource == this.sourceLanguage[2] && languageDest == this.destLanguage[1]) {
             try {
                 result = GoogleTranslateAPI.translate(paragraph, GoogleTranslateAPI.AUTO, GoogleTranslateAPI.VIETNAMESE);
             } catch (IOException | TimeoutException exception) {
-                GoogleTranslateAPI.handleNotification();
+                InterfaceController.handleTranslateFailedNotification();
                 throw new RuntimeException();
             }
         }

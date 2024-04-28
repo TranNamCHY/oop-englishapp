@@ -3,15 +3,9 @@ package org.englishapp.englishapp.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javazoom.jl.decoder.JavaLayerException;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +15,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.tools.Borders;
 import org.englishapp.englishapp.Management.ManagementFavorite;
 import org.englishapp.englishapp.Management.ManagementHistoryDatabase;
-import org.englishapp.englishapp.utils.TextToSpeech;
-import javafx.scene.transform.Translate;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import javafx.fxml.Initializable;
@@ -35,14 +26,10 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import org.englishapp.englishapp.CustomObject.Word;
-import org.englishapp.englishapp.Management.MangementDatabase;
-import org.englishapp.englishapp.utils.GoogleVoiceAPI;
-
-import javax.security.auth.login.AccountNotFoundException;
+import org.englishapp.englishapp.Management.ManagementDictionaryDatabase;
 
 public class GeneralAppController implements Initializable, InterfaceController {
 
@@ -104,7 +91,7 @@ public class GeneralAppController implements Initializable, InterfaceController 
 
     @FXML
     private TextField searchHistory;
-    public MangementDatabase handleManagement;
+    public ManagementDictionaryDatabase handleManagement;
 
     private ManagementHistoryDatabase managementHistoryDatabase;
 
@@ -119,30 +106,14 @@ public class GeneralAppController implements Initializable, InterfaceController 
 
     public String searchedWord = "";
 
-    //public int buttonYesStatus;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Set the firstState: Init and Searchs
-        //StateMachine.setInitAndSeacrch();
-
-        // Load SearcherController
-        /* BorderPane newBorderPane;
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("SearchController.fxml"));
-        try {
-            newBorderPane = loader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException();
-        }
-        this.searchController = loader.getController();
-        this.searchController.setGeneralAppController(this);
-        this.ChangeMainBorderPane(newBorderPane); */
         this.loadSeacherController();
         this.isHistoryRequest = 0;
-        // Create ultility class
+
         this.managementFavorite = new ManagementFavorite();
         this.managementHistoryDatabase = new ManagementHistoryDatabase();
-        this.handleManagement = new MangementDatabase();
+        this.handleManagement = new ManagementDictionaryDatabase();
         this.LeftPaneTransition = new TranslateTransition(Duration.millis(300), LeftPaneTab);
         this.LeftPaneTransition.setFromX(0);
         this.LeftPaneTransition.setToX(-250);
@@ -264,29 +235,21 @@ public class GeneralAppController implements Initializable, InterfaceController 
 
     public void startSearch() throws IOException {
         String wordType = searchBar.getText();
-        //System.out.print(wordType);
         if (StateMachine.state != StateMachine.InitAndSeacrch) {
             this.loadSeacherController();
         }
         Word resultWord = this.handleManagement.findWord(wordType);
         if (resultWord == null) {
             this.searchedWord = null;
-            //this.searchController.displaySearchResult.getEngine().loadContent("Could not find that word!", "text/html");
             this.searchController.setDisplaySearchResult("Could not find that word!", "text/html");
         } else {
             this.searchedWord = wordType;
             this.managementHistoryDatabase.addWord(resultWord.getWordType());
-            //System.out.print(resultWord.getWordType());
-            //this.searchController.displaySearchResult.getEngine().loadContent(resultWord.getHtmlType(), "text/html");
             this.searchController.setDisplaySearchResult(resultWord.getHtmlType(), "text/html");
         }
     }
 
-    public void handleClickOnUkAudio() {
-
-    }
-
-    public void handleClickOnUsAudio() {
+    /* public void handleClickOnUsAudio() {
         String wordType = searchBar.getText();
         try {
             GoogleVoiceAPI.getInstance().playAudio(GoogleVoiceAPI.getInstance().getAudio(wordType,
@@ -295,24 +258,65 @@ public class GeneralAppController implements Initializable, InterfaceController 
             System.err.println("Failed to play Audio from Google, fallback to FreeTTS");
             TextToSpeech.speak(wordType);
         }
-    }
+    } */
 
     public void handleClickOnSave() {
-        //System.out.printf("Value of searched word: %s\n", this.searchedWord);
         if (this.searchedWord == null) {
             return;
         }
         String favoriteWord = this.searchedWord;
         if (this.managementFavorite.isExist(favoriteWord)) {
-            //handleNotification("Error", "Word existed");
         } else {
             this.managementFavorite.addWord(favoriteWord);
-            handleSuccessNotification("Successfully Update","Complete adding to your favorite list");
+            InterfaceController.handleSuccessNotification("Successfully Update", "Complete adding to your favorite list");
         }
     }
 
-    public void handleClickOnDelete() {
+    public void chooseFromHistoryList() {
+        String wordType = (String) this.historyList.getSelectionModel().getSelectedItem();
+        Word resultWord = this.handleManagement.findWord(wordType);
+        this.searchBar.setText(wordType);
+        if (StateMachine.state != StateMachine.InitAndSeacrch) {
+            this.loadSeacherController();
+        }
+        if (resultWord == null) {
+            this.searchController.setDisplaySearchResult("Could not find that word!", "text/html");
+        } else {
+            this.managementHistoryDatabase.addWord(resultWord.getWordType());
+            this.searchController.setDisplaySearchResult(resultWord.getHtmlType(), "text/html");
+        }
+    }
 
+    /* public static void handleSuccessNotification(String title,String text) {
+        Notifications notificationBuilder = Notifications.create()
+                .title(title)
+                .text(text)
+                .graphic(null)
+                .hideAfter(Duration.seconds(3))
+                .position(Pos.BOTTOM_LEFT);
+        notificationBuilder.showConfirm();
+    } */
+
+    public static void handleNotification(String title, String text) {
+        Notifications notificationBuilder = Notifications.create()
+                .title(title)
+                .text(text)
+                .graphic(null)
+                .hideAfter(Duration.seconds(3))
+                .position(Pos.BOTTOM_LEFT);
+        notificationBuilder.showWarning();
+    }
+
+    public void findMatchestWordFromHistory() {
+        String wordType = this.searchHistory.getText();
+        this.managementHistoryDatabase.findMatchestWord(wordType);
+        List<Word> result = this.managementHistoryDatabase.getSearchResultList();
+        String[] finalResult = new String[100];
+        for (int i = 0; i < result.size() && i < 100; i++) {
+            finalResult[i] = result.get(i).getWordType();
+        }
+        this.historyList.getItems().clear();
+        this.historyList.getItems().addAll(finalResult);
     }
 
     public void loadGoogleTranslate() {
@@ -342,41 +346,6 @@ public class GeneralAppController implements Initializable, InterfaceController 
             result[i] = temptResult.get((temptResult.size()) - 1 - i).getWordType();
         }
         this.historyList.getItems().addAll(result);
-    }
-
-    public void chooseFromHistoryList() {
-        String wordType = (String) this.historyList.getSelectionModel().getSelectedItem();
-        Word resultWord = this.handleManagement.findWord(wordType);
-        this.searchBar.setText(wordType);
-        if (StateMachine.state != StateMachine.InitAndSeacrch) {
-            this.loadSeacherController();
-        }
-        if (resultWord == null) {
-            this.searchController.setDisplaySearchResult("Could not find that word!", "text/html");
-        } else {
-            this.managementHistoryDatabase.addWord(resultWord.getWordType());
-            this.searchController.setDisplaySearchResult(resultWord.getHtmlType(), "text/html");
-        }
-    }
-
-    public static void handleSuccessNotification(String title,String text) {
-        Notifications notificationBuilder = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(null)
-                .hideAfter(Duration.seconds(3))
-                .position(Pos.BOTTOM_LEFT);
-        notificationBuilder.showConfirm();
-    }
-
-    public static void handleNotification(String title, String text) {
-        Notifications notificationBuilder = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(null)
-                .hideAfter(Duration.seconds(3))
-                .position(Pos.BOTTOM_LEFT);
-        notificationBuilder.showWarning();
     }
 
     public void loadHistory() {
@@ -410,18 +379,6 @@ public class GeneralAppController implements Initializable, InterfaceController 
         this.ChangeMainBorderPane(newBorderPane);
     }
 
-    public void findMatchestWordFromHistory() {
-        String wordType = this.searchHistory.getText();
-        this.managementHistoryDatabase.findMatchestWord(wordType);
-        List<Word> result = this.managementHistoryDatabase.getSearchResultList();
-        String[] finalResult = new String[100];
-        for (int i = 0; i < result.size() && i < 100; i++) {
-            finalResult[i] = result.get(i).getWordType();
-        }
-        this.historyList.getItems().clear();
-        this.historyList.getItems().addAll(finalResult);
-    }
-
     public void loadChooseGame() {
         if (this.confirmBeforeQuitGame() == 0) {
             return;
@@ -440,7 +397,8 @@ public class GeneralAppController implements Initializable, InterfaceController 
         chooseGameController.setGeneralAppController(this);
         this.ChangeMainBorderPane(newBorderPane);
     }
-    public void loadChooseGameWithoutCofirm(){
+
+    public void loadChooseGameWithoutCofirm() {
         StateMachine.setChooseGame();
         this.ClearStatusButton();
         this.gameTab.getStyleClass().add("active");
@@ -486,10 +444,12 @@ public class GeneralAppController implements Initializable, InterfaceController 
 
     }
 
+    public void handleClickOnUkAudio() {
+    }
 
+    public void handleClickOnUsAudio() {
+    }
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    public void handleClickOnDelete() {
     }
 }

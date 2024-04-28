@@ -47,14 +47,13 @@ public class GoogleTranslateAPI {
     }
 
     public static String generateURL(String sourceLanguage, String destLanguage, String textSource) {
-        //System.out.printf("Value of text source: %s\n",textSource);
         textSource = textSource.replace("\n", " ");
         return GOOGLE_TRANS_URL +
                 "client=gtrans" +
                 "&sl=" + sourceLanguage +
                 "&tl=" + destLanguage +
                 "&hl=" + destLanguage +
-                "&tk=" + generateNewToken() +
+                //"&tk=" + generateNewToken() +
                 "&q=" + URLEncoder.encode(textSource, StandardCharsets.UTF_8);
     }
 
@@ -103,7 +102,7 @@ public class GoogleTranslateAPI {
         return null;
     }
 
-    public static void handleNotification() {
+    /* public static void handleNotification() {
         Notifications notificationBuilder = Notifications.create()
                 .title("Translate failed !. Please check your internet connection")
                 .text("Translate faield !")
@@ -111,5 +110,5 @@ public class GoogleTranslateAPI {
                 .hideAfter(Duration.seconds(3))
                 .position(Pos.BOTTOM_LEFT);
         notificationBuilder.showWarning();
-    }
+    } */
 }
