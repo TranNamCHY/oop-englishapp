@@ -17,6 +17,8 @@
         <javafx.version>21.0.1</javafx.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
         <sqlite.jdbc.version>3.43.0.0</sqlite.jdbc.version>
+        <jlink-image-name>english-learning-app</jlink-image-name>
+        <ini4j-jar-name>jlayer</ini4j-jar-name>
     </properties>
 
     <dependencies>
@@ -91,6 +93,53 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <!-- Copy ini4j jar into the jlink image -->
+                        <artifactItem>
+                            <groupId>javazoom</groupId>
+                            <artifactId>jlayer</artifactId>
+                            <version>1.0.1</version>
+                            <type>jar</type>
+                            <overWrite>true</overWrite>
+                            <destFileName>${ini4j-jar-name}</destFileName>
+                        </artifactItem>
+                    </artifactItems>
+                    <!-- Set output directory to lib folder in jlink image -->
+                    <outputDirectory>${project.build.directory}/${jlink-image-name}/lib</outputDirectory>
+                    <overWriteReleases>true</overWriteReleases>
+                    <overWriteSnapshots>true</overWriteSnapshots>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>laucher</launcher>
+                    <jlinkImageName>english-learning-app</jlinkImageName>
+                    <mainClass>org.englishapp.englishapp.EnglishAppLauncher</mainClass>
+                    <!-- ini4j jar file will be copied to the {image-folder}/lib/ folder. The launcher script should have this option to add it to the classpath -->
+                    <options>-cp ../lib/${ini4j-jar-name}</options>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
@@ -124,6 +173,13 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx.maven.plugin.version}</version>
+                <configuration>
+                    <jlinkImageName>english-learning-app</jlinkImageName>
+                    <launcher>launcher</launcher>
+                    <mainClass>
+                        org.englishapp.englishapp.EnglishAppLauncher
+                    </mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

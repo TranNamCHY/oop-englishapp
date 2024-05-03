@@ -5,7 +5,7 @@ module org.englishapp.englishapp {
     requires javafx.web;
     requires java.sql;
     requires jlayer;
-    requires freetts;
+    //requires freetts;
     requires org.controlsfx.controls;
     requires java.ocr.api;
     //requires com.dlsc.formsfx;
