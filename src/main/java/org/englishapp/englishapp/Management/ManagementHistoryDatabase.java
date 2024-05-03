@@ -6,12 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagementHistoryDatabase {
+public class ManagementHistoryDatabase extends ManagementDatabase {
     private final String PATH_DATABASE = "jdbc:sqlite:src/main/resources/org/englishapp/englishapp/Database/history.db";
-
-    private Connection sqlConnection;
-
-    private final List<Word> searchResultList;
 
     public ManagementHistoryDatabase() {
         this.searchResultList = new ArrayList<Word>();
@@ -20,14 +16,6 @@ public class ManagementHistoryDatabase {
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
-    }
-
-    public List<Word> getSearchResultList() {
-        return this.searchResultList;
-    }
-
-    public Connection getSqlConnection() {
-        return sqlConnection;
     }
 
     public Word findWord(String wordType) {
@@ -79,14 +67,13 @@ public class ManagementHistoryDatabase {
         PreparedStatement preparedStatement;
         this.searchResultList.clear();
         ResultSet resultSet;
-        try{
+        try {
             preparedStatement = sqlConnection.prepareStatement(sqlQuery);
             resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                this.searchResultList.add(new Word(resultSet.getString("Word"),null));
+            while (resultSet.next()) {
+                this.searchResultList.add(new Word(resultSet.getString("Word"), null));
             }
-        }
-        catch (SQLException exception){
+        } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
         return this.searchResultList;
@@ -98,11 +85,11 @@ public class ManagementHistoryDatabase {
         PreparedStatement preparedStatement;
         try {
             preparedStatement = sqlConnection.prepareStatement(sqlQuery);
-            preparedStatement.setString(1, wordType+"%");
+            preparedStatement.setString(1, wordType + "%");
             System.out.print(preparedStatement.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                this.searchResultList.add(new Word(resultSet.getString("Word"),null));
+                this.searchResultList.add(new Word(resultSet.getString("Word"), null));
             }
         } catch (SQLException exception) {
             throw new RuntimeException(exception);

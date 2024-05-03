@@ -1,10 +1,7 @@
 package org.englishapp.englishapp.Controller;
 
-import com.sun.speech.engine.synthesis.SynthesizerSelector;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.css.StyleableStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,16 +17,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.englishapp.englishapp.utils.MyTimerTask;
+import org.englishapp.englishapp.utility.MyTimerTask;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-public class GuessWordGameController implements Initializable {
+public class GuessWordGameController implements Initializable, InterfaceController {
 
     @FXML
     Button buttonA;
@@ -71,6 +67,7 @@ public class GuessWordGameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.setState();
         generalAppController = null;
         numberOfQuestion = 0;
         timeCount = 0;
@@ -95,6 +92,11 @@ public class GuessWordGameController implements Initializable {
             System.out.print(exception.getMessage());
         }
         this.loadNextQuestion();
+    }
+
+    @Override
+    public void setState() {
+        StateMachine.setGame();
     }
 
     public void setGeneralAppController(GeneralAppController generalAppController) {
@@ -150,6 +152,7 @@ public class GuessWordGameController implements Initializable {
     }
 
     private void loadNextQuestion() {
+        //this.resetButtonStatus();
         if (this.numberOfQuestion > 10) {
             this.generalAppController.loadPlayAgain(this.score);
             if (this.timer != null) {
@@ -212,6 +215,16 @@ public class GuessWordGameController implements Initializable {
         this.indexCorrectQuestion = rightIdex;
     }
 
+    public void clearButtonCss(Button button){
+        button.getStyleClass().removeAll("tab-button", "incorrect-button", "correct-button");
+    }
+
+    public void resetButtonStatus(){
+        this.buttonA.getStyleClass().add("tab-button");
+        this.buttonB.getStyleClass().add("tab-button");
+        this.buttonC.getStyleClass().add("tab-button");
+        this.buttonD.getStyleClass().add("tab-button");
+    }
     public void chooseA() {
         if (this.indexCorrectQuestion == 0) {
             Platform.runLater(() -> {

@@ -6,12 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManagementFavorite {
+public class ManagementFavorite extends ManagementDatabase {
     private final String PATH_DATABASE = "jdbc:sqlite:src/main/resources/org/englishapp/englishapp/Database/favorite.db";
-
-    private Connection sqlConnection;
-
-    private final List<Word> searchResultList;
 
     public ManagementFavorite() {
         this.searchResultList = new ArrayList<Word>();
@@ -21,15 +17,6 @@ public class ManagementFavorite {
             throw new RuntimeException(exception);
         }
     }
-
-    public List<Word> getSearchResultList() {
-        return this.searchResultList;
-    }
-
-    public Connection getSqlConnection() {
-        return sqlConnection;
-    }
-
 
     public void deleteWord(String wordType) {
         String sqlQuery = "Delete FROM favorite WHERE Word = ? COLLATE NOCASE";
@@ -42,7 +29,7 @@ public class ManagementFavorite {
             throw new RuntimeException(e);
         }
     }
-    
+
     public void addWord(String wordType) {
         this.deleteWord(wordType);
         String sqlQuery = "INSERT INTO favorite(Id,Word) VALUES(NULL,?)";

@@ -1,0 +1,208 @@
+@startuml
+'https://plantuml.com/class-diagram
+interface InterfaceController{
++  static void handleSuccessNotification(String title, String text)
++  static void handleErrorNotification(String title, String text)
++  static void handleTranslateFailedNotification()
++  void setState()
+}
+class Initializable {
++  void initialize(URL location,
+ResourceBundle resources)
+}
+class GeneralAppController{
+    -  Button searchTab
+    -  Button googleTranslateTab
+    -  Button favoritesTab
+    -  Button historyTab
+    -  Button addToDictTab
+    -  Button gameTab
+    -  Pane LeftPaneTab
+    -  BorderPane mainBorderPane
+    -  ImageView HideMenuImage
+    -  TextField searchBar
+    -  TranslateTransition LeftPaneTransition;
+    -  ListView historyList
+    -  VBox fatherLeftPaneTab
+    -  TextField searchHistory
+    -  ManagementDictionaryDatabase handleManagement
+    -  ManagementHistoryDatabase managementHistoryDatabase
+    -  ManagementFavorite managementFavorite
+    -  int isHistoryRequest
+    -  SearchController searchController
+    -  AddController addController
+    -  GuessWordGameController guessWordGameController
+    -  String searchedWord
+
+    +  ManagementDictionaryDatabase getHandleManagement()
+    +  ManagementFavorite getManagementFavorite()
+    +  TextField getSearchBar()
+    +  void setState()
+    +  void initialize(URL location, ResourceBundle resources)
+        +  void ChangeController(BorderPane newMainBorderPane)
+        +  int confirmBeforeQuitGame()
+        +  void ClearStatusButton()
+        +  void HideMenu()
+        +  void disableListView()
+        +  void checkIfEnterTyped(KeyEvent event)
+        +  void findMatchestWord()
+        +  void handleChosenFromMenu()
+        +  void startSearch()
+        +  void handleClickOnSave()
+        +  void chooseFromHistoryList()
+        +  void findMatchestWordFromHistory()
+        +  void loadGoogleTranslate()
+        +  void loadFavorites()
+        +  void loadHistory()
+        +  void loadAddToDict()
+        +  void loadChooseGame()
+        +  void loadChooseGameWithoutCofirm()
+        +  void loadGuessWordGame()
+        +  void loadPlayAgain(int score)
+        +  void loadSeacherController()
+
+}
+GeneralAppController --> Initializable
+GeneralAppController --> InterfaceController
+class AddController {
+    -  TextArea wordField
+    -  TextArea pronunciationField
+    -  TextArea shortDescArea
+    -  HTMLEditor explainField
+    -  ManagementDictionaryDatabase managementDictionaryDatabase
+    -  int buttonYesStatus
+    -  int buttonNoStatus
+    -  String rawHTML
+    +  void initialize(URL location, ResourceBundle resources)
+    +  void setState()
+    +  static void handleNotification(String title, String text)
+    +  static void handleSuccessNotification()
+    +  void setMangementDatabase(ManagementDictionaryDatabase managementDictionaryDatabase)
+    +  boolean checkWordField()
+    +  void updateExplainFieldTemplate(KeyEvent event)
+    +  void onAddButtonClick()
+    -  void clearFields()
+    +  void displayAlert(String title,String message)
+}
+AddController --> Initializable
+AddController --> InterfaceController
+class ChooseGameController {
+    -  Label gameRule;
+    -  Button guessWordGameButton;
+    -  Label gameRuleLabel;
+    -  Button enterGameButton;
+    -  GeneralAppController generalAppController;
+    +  void initialize(URL location, ResourceBundle resources)
+    +  void setGeneralAppController(GeneralAppController generalAppController)
+    +  void onGuessGameButtonClick()
+    +  void onEnterGameButtonClick()
+    +  void setState()
+}
+ChooseGameController --> Initializable
+ChooseGameController --> InterfaceController
+class GoogleTranslateController {
+    -  TextArea rightTextArea
+    -  TextArea leftTextArea
+    -  ChoiceBox firstLanguageChoiceBox
+    -  ChoiceBox secondLanguageChoiceBox
+    -  final String[] sourceLanguage
+    -  final String[] destLanguage
+    +  void initialize(URL location, ResourceBundle resources)
+    +  void setState()
+    +  void handleDuplicateChoice1()
+    +  void handleDuplicateChoice2()
+    +  void handleTranslate()
+    +  void ClickChooseImage()
+}
+
+GoogleTranslateController --> Initializable
+GoogleTranslateController --> InterfaceController
+
+class GuessWordGameController {
+    Button buttonA
+    Button buttonB
+    Button buttonC
+    Button buttonD
+    ImageView showPicture
+    Label scoreCountLabel
+    Label correctQuestionCount
+    -  List<String> wordList
+    -  List<String> imageList
+    -  List<String> temptWordList
+    +  TextField timeClock
+    +  int buttonNoStatus
+    +  int buttonYesStatus
+    -  int indexCorrectQuestion
+    -  GeneralAppController generalAppController
+    -  int score = 0
+    +  int timeCount
+    -  int numberOfQuestion
+    -  Timer timer
+    -  int correctQuestion = 0
+    +  static final String PATH_GUESS_GAME_TXT
+    +  static final String PATH_GUESS_GAME_IMAGE
+    +  void initialize(URL location, ResourceBundle resources)
+    +  void setState()
+    +  void setGeneralAppController(GeneralAppController generalAppController)
+    +  void setCLock(int time)
+    +  void handeSystickInterrupt()
+    +  static void loadFileToList(String filePath, List<String> list)
+    +  void createTimer()
+    +  void continueTimer()
+    -  void loadNextQuestion()
+    +  void clearButtonCss(Button button)
+    +  void resetButtonStatus()
+    +  void chooseA()
+    +  void chooseB()
+    +  void chooseC()
+    +  void chooseD()
+    +  void handleCorrectAnswer()
+    +  void handleInCorrectAnswer()
+    -  void loadWordList()
+    -  void loadImageList()
+    +  int onExitGame()
+    +  int onExitGameButtonClick()
+    +  void displayAlert(String title, String message)
+}
+
+GuessWordGameController --> Initializable
+GuessWordGameController --> InterfaceController
+
+class SearchController {
+
+    -  ListView showMatchestWord
+    -  WebView displaySearchResult
+    -  GeneralAppController generalAppController
+    -  int buttonYesStatus = 0
+    -  int buttonNoStatus = 0
+    +  void initialize(URL location, ResourceBundle resources)
+    +  ListView getShowMatchestWord()
+    +  void setState()
+    +  void displayAlert(String title, String message)
+    +  void setGeneralAppController(GeneralAppController controller)
+    +  void disableListView()
+    +  void handleChosenFromMenu()
+    +  void setDisplaySearchResult(String html, String typeFile)
+    +  void handleClickOnUkAudio()
+    +  void handleClickOnUsAudio()
+    +  void handleClickOnSave()
+    +  void handleClickOnDelete()
+}
+
+SearchController --> Initializable
+SearchController --> InterfaceController
+class ShowScore {
+    -  int score
+    +  TextArea showResult
+    -  GeneralAppController generalAppController
+    +  void initialize(URL location, ResourceBundle resources)
+    +  void setState()
+    +  void setGeneralAppController(GeneralAppController generalAppController)
+    +  void setScore(int score)
+    +  void onExitGameButtonClick()
+    +  void clickPlayAgain()
+}
+ShowScore --> Initializable
+ShowScore --> InterfaceController
+@enduml
+

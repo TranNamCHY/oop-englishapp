@@ -13,25 +13,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import org.controlsfx.control.Notifications;
-import org.englishapp.englishapp.utils.TextToSpeech;
 import javafx.scene.web.WebView;
-import javafx.util.Duration;
 import javafx.fxml.Initializable;
-import org.englishapp.englishapp.HelloApplication;
+import org.englishapp.englishapp.EnglishAppLauncher;
 
 import java.io.IOException;
+import java.net.NoRouteToHostException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 import org.englishapp.englishapp.CustomObject.Word;
-import org.englishapp.englishapp.utils.GoogleVoiceAPI;
+import org.englishapp.englishapp.utility.GoogleVoiceAPI;
 
 public class SearchController implements Initializable, InterfaceController {
 
     @FXML
-    public ListView showMatchestWord;
-
+    private ListView showMatchestWord;
 
     @FXML
     private WebView displaySearchResult;
@@ -43,8 +41,17 @@ public class SearchController implements Initializable, InterfaceController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.setState();
+        FXMLLoader loader = new FXMLLoader(EnglishAppLauncher.class.getResource("InitialApplication.fxml"));
+    }
+
+    public ListView getShowMatchestWord(){
+        return this.showMatchestWord;
+    }
+
+    @Override
+    public void setState() {
         StateMachine.setInitAndSeacrch();
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("InitialApplication.fxml"));
     }
 
     public void displayAlert(String title, String message) {
@@ -93,13 +100,7 @@ public class SearchController implements Initializable, InterfaceController {
 
     public void handleChosenFromMenu() {
         String wordType = (String) this.showMatchestWord.getSelectionModel().getSelectedItem();
-        this.generalAppController.searchBar.setText(wordType);
-        /* Word resultWord = this.generalAppController.handleManagement.findWord(wordType);
-        if (resultWord == null) {
-            displaySearchResult.getEngine().loadContent("Could not find that word!", "text/html");
-        } else {
-            displaySearchResult.getEngine().loadContent(resultWord.getHtmlType(), "text/html");
-        } */
+        this.generalAppController.getSearchBar().setText(wordType);
         try {
             this.generalAppController.startSearch();
         } catch (IOException exception) {
@@ -112,64 +113,76 @@ public class SearchController implements Initializable, InterfaceController {
     }
 
     public void handleClickOnUkAudio() {
-        String wordType = this.generalAppController.searchBar.getText();
+        String wordType = this.generalAppController.getSearchBar().getText();
         try {
             GoogleVoiceAPI.getInstance().playAudio(GoogleVoiceAPI.getInstance().getAudio(wordType,
                     "en-UK"));
-        } catch (IOException | JavaLayerException e) {
-            System.err.println("Failed to play Audio from Google, fallback to FreeTTS");
-            TextToSpeech.speak(wordType);
+        } catch (NoRouteToHostException | UnknownHostException exception) {
+            exception.printStackTrace();
+            InterfaceController.handleErrorNotification("Error", "Please check your internet connection !");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            InterfaceController.handleErrorNotification("Error", "Empty search bar");
+        } catch (JavaLayerException exception) {
+            exception.printStackTrace();
+            InterfaceController.handleErrorNotification("Error", "Unexception error");
         }
     }
 
     public void handleClickOnUsAudio() {
-        String wordType = this.generalAppController.searchBar.getText();
+        String wordType = this.generalAppController.getSearchBar().getText();
         try {
             GoogleVoiceAPI.getInstance().playAudio(GoogleVoiceAPI.getInstance().getAudio(wordType,
                     "en-US"));
-        } catch (IOException | JavaLayerException e) {
-            System.err.println("Failed to play Audio from Google, fallback to FreeTTS");
-            TextToSpeech.speak(wordType);
+        } catch (NoRouteToHostException | UnknownHostException exception) {
+            exception.printStackTrace();
+            InterfaceController.handleErrorNotification("Error", "Please check your internet connection !");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            InterfaceController.handleErrorNotification("Error", "Empty search bar");
+        } catch (JavaLayerException exception) {
+            exception.printStackTrace();
+            InterfaceController.handleErrorNotification("Error", "Unexception error");
         }
     }
 
     public void handleClickOnSave() {
-        System.out.printf("Value of searched word: %s\n", this.generalAppController.searchBar.getText());
-        if (this.generalAppController.searchBar.getText() == null) {
+        if (this.generalAppController.getSearchBar().getText() == null) {
             return;
         }
-        String favoriteWord = this.generalAppController.searchBar.getText();
-        if (this.generalAppController.managementFavorite.isExist(favoriteWord)) {
-            this.displayAlert("Confirm","This word existed in favorite list, do you want to remove it ?");
-            if(this.buttonYesStatus != 1){
+        String favoriteWord = this.generalAppController.getSearchBar().getText();
+        if (this.generalAppController.getManagementFavorite().isExist(favoriteWord)) {
+            this.displayAlert("Confirm", "This word existed in favorite list, do you want to remove it ?");
+            if (this.buttonYesStatus != 1) {
                 return;
             }
-            this.generalAppController.managementFavorite.deleteWord(favoriteWord);
-            InterfaceController.handleSuccessNotification("Successfully Update","Complete removing from your favorite list");
+            this.generalAppController.getManagementFavorite().deleteWord(favoriteWord);
+            InterfaceController.handleSuccessNotification("Successfully Update", "Complete removing from your favorite list");
         } else {
-            this.displayAlert("Confirm", "Are you sure ?");
-            if(this.buttonYesStatus != 1){
+            this.displayAlert("Confirm", "Do you want to add to your favorite list ?");
+            if (this.buttonYesStatus != 1) {
                 return;
             }
-            this.generalAppController.managementFavorite.addWord(favoriteWord);
-            InterfaceController.handleSuccessNotification("Successfully Update","Complete adding to your favorite list");
+            this.generalAppController.getManagementFavorite().addWord(favoriteWord);
+            InterfaceController.handleSuccessNotification("Successfully Update", "Complete adding to your favorite list");
         }
     }
 
     public void handleClickOnDelete() {
-        String wordType = this.generalAppController.searchBar.getText();
-        Word resultWord = this.generalAppController.handleManagement.findWord(wordType);
+        String wordType = this.generalAppController.getSearchBar().getText();
+        Word resultWord = this.generalAppController.getHandleManagement().findWord(wordType);
         if (resultWord == null) {
-            handleNotification();
+            InterfaceController.handleErrorNotification("Delete failed !", "Could not find that word !");
         } else {
-            this.displayAlert("Confirm", "Are you sure ?");
+            this.displayAlert("Confirm", "Do you want to remove from dictionary ?");
             if (this.buttonYesStatus == 1) {
-                this.generalAppController.handleManagement.deleteWord(wordType);
+                this.generalAppController.getHandleManagement().deleteWord(wordType);
+                InterfaceController.handleSuccessNotification("Succesfully", "Completely delete word !");
             }
         }
     }
 
-    public static void handleNotification() {
+    /* public static void handleNotification() {
         Notifications notificationBuilder = Notifications.create()
                 .title("Delete failed !")
                 .text("Could not find that word !")
@@ -177,6 +190,6 @@ public class SearchController implements Initializable, InterfaceController {
                 .hideAfter(Duration.seconds(3))
                 .position(Pos.BOTTOM_LEFT);
         notificationBuilder.showWarning();
-    }
+    } */
 
 }

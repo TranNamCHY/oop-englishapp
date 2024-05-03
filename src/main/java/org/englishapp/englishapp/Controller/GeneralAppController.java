@@ -2,25 +2,21 @@ package org.englishapp.englishapp.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.controlsfx.control.Notifications;
 import org.englishapp.englishapp.Management.ManagementFavorite;
 import org.englishapp.englishapp.Management.ManagementHistoryDatabase;
-import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import javafx.fxml.Initializable;
-import org.englishapp.englishapp.HelloApplication;
+import org.englishapp.englishapp.EnglishAppLauncher;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -32,11 +28,6 @@ import org.englishapp.englishapp.CustomObject.Word;
 import org.englishapp.englishapp.Management.ManagementDictionaryDatabase;
 
 public class GeneralAppController implements Initializable, InterfaceController {
-
-    @FXML
-    private AnchorPane InitialPane;
-    @FXML
-    private Label welcomeText;
 
     @FXML
     private Button searchTab;
@@ -66,22 +57,9 @@ public class GeneralAppController implements Initializable, InterfaceController 
     private ImageView HideMenuImage;
 
     @FXML
-    private BorderPane SearchPane;
-
-    @FXML
-    public TextField searchBar;
-
-    @FXML
-    private ListView showMatchestWord;
+    private TextField searchBar;
 
     private TranslateTransition LeftPaneTransition;
-    @FXML
-    private Button ShowMenu;
-
-    @FXML
-    private WebView displaySearchResult;
-    @FXML
-    private ImageView UkAudio;
 
     @FXML
     private ListView historyList;
@@ -91,32 +69,54 @@ public class GeneralAppController implements Initializable, InterfaceController 
 
     @FXML
     private TextField searchHistory;
-    public ManagementDictionaryDatabase handleManagement;
+    private ManagementDictionaryDatabase handleManagement;
 
     private ManagementHistoryDatabase managementHistoryDatabase;
 
-    public ManagementFavorite managementFavorite;
+    private ManagementFavorite managementFavorite;
 
     private int isHistoryRequest = 0;
     private SearchController searchController;
 
     private AddController addController;
-
     private GuessWordGameController guessWordGameController;
 
-    public String searchedWord = "";
+    private String searchedWord = "";
+
+    public ManagementDictionaryDatabase getHandleManagement(){
+        return this.handleManagement;
+    }
+
+    public ManagementFavorite getManagementFavorite(){
+        return this.managementFavorite;
+    }
+    public TextField getSearchBar(){
+        return this.searchBar;
+    }
+    @Override
+    public void setState() {
+        StateMachine.setInitAndSeacrch();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.loadSeacherController();
         this.isHistoryRequest = 0;
-
+        this.setState();
         this.managementFavorite = new ManagementFavorite();
         this.managementHistoryDatabase = new ManagementHistoryDatabase();
         this.handleManagement = new ManagementDictionaryDatabase();
         this.LeftPaneTransition = new TranslateTransition(Duration.millis(300), LeftPaneTab);
         this.LeftPaneTransition.setFromX(0);
         this.LeftPaneTransition.setToX(-250);
+    }
+
+    public void ChangeController(BorderPane newMainBorderPane) {
+        this.mainBorderPane.setTop(newMainBorderPane.getTop());
+        this.mainBorderPane.setLeft(newMainBorderPane.getLeft());
+        this.mainBorderPane.setCenter(newMainBorderPane.getCenter());
+        this.mainBorderPane.setRight(newMainBorderPane.getRight());
+        this.mainBorderPane.setBottom(newMainBorderPane.getBottom());
     }
 
     public int confirmBeforeQuitGame() {
@@ -126,25 +126,6 @@ public class GeneralAppController implements Initializable, InterfaceController 
         return this.guessWordGameController.onExitGame();
     }
 
-    public void loadSeacherController() {
-        if (this.confirmBeforeQuitGame() == 0) {
-            return;
-        }
-        StateMachine.setInitAndSeacrch();
-        this.ClearStatusButton();
-        this.searchTab.getStyleClass().add("active");
-        BorderPane newBorderPane;
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("SearchController.fxml"));
-        try {
-            newBorderPane = loader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException();
-        }
-        this.searchController = loader.getController();
-        this.searchController.setGeneralAppController(this);
-        this.ChangeMainBorderPane(newBorderPane);
-    }
-
     public void ClearStatusButton() {
         searchTab.getStyleClass().removeAll("active");
         googleTranslateTab.getStyleClass().removeAll("active");
@@ -152,14 +133,6 @@ public class GeneralAppController implements Initializable, InterfaceController 
         historyTab.getStyleClass().removeAll("active");
         addToDictTab.getStyleClass().removeAll("active");
         gameTab.getStyleClass().removeAll("active");
-    }
-
-    public void ChangeMainBorderPane(BorderPane newMainBorderPane) {
-        this.mainBorderPane.setTop(newMainBorderPane.getTop());
-        this.mainBorderPane.setLeft(newMainBorderPane.getLeft());
-        this.mainBorderPane.setCenter(newMainBorderPane.getCenter());
-        this.mainBorderPane.setRight(newMainBorderPane.getRight());
-        this.mainBorderPane.setBottom(newMainBorderPane.getBottom());
     }
 
     public void HideMenu() {
@@ -211,8 +184,8 @@ public class GeneralAppController implements Initializable, InterfaceController 
     }
 
     public void findMatchestWord() {
-        this.searchController.showMatchestWord.getItems().clear();
-        this.searchController.showMatchestWord.setVisible(true);
+        this.searchController.getShowMatchestWord().getItems().clear();
+        this.searchController.getShowMatchestWord().setVisible(true);
         String wordType = null;
         wordType = searchBar.getText();
         this.handleManagement.findMatchestWord(wordType);
@@ -220,11 +193,11 @@ public class GeneralAppController implements Initializable, InterfaceController 
         for (int i = 0; i < this.handleManagement.getSearchResultList().size(); i++) {
             result[i] = this.handleManagement.getSearchResultList().get(i).getWordType();
         }
-        this.searchController.showMatchestWord.getItems().addAll(result);
+        this.searchController.getShowMatchestWord().getItems().addAll(result);
     }
 
     public void handleChosenFromMenu() {
-        String wordType = (String) this.searchController.showMatchestWord.getSelectionModel().getSelectedItem();
+        String wordType = (String) this.searchController.getShowMatchestWord().getSelectionModel().getSelectedItem();
         Word resultWord = this.handleManagement.findWord(wordType);
         if (resultWord == null) {
             this.searchController.setDisplaySearchResult("Could not find that word!", "text/html");
@@ -248,17 +221,6 @@ public class GeneralAppController implements Initializable, InterfaceController 
             this.searchController.setDisplaySearchResult(resultWord.getHtmlType(), "text/html");
         }
     }
-
-    /* public void handleClickOnUsAudio() {
-        String wordType = searchBar.getText();
-        try {
-            GoogleVoiceAPI.getInstance().playAudio(GoogleVoiceAPI.getInstance().getAudio(wordType,
-                    "en-US"));
-        } catch (IOException | JavaLayerException e) {
-            System.err.println("Failed to play Audio from Google, fallback to FreeTTS");
-            TextToSpeech.speak(wordType);
-        }
-    } */
 
     public void handleClickOnSave() {
         if (this.searchedWord == null) {
@@ -287,26 +249,6 @@ public class GeneralAppController implements Initializable, InterfaceController 
         }
     }
 
-    /* public static void handleSuccessNotification(String title,String text) {
-        Notifications notificationBuilder = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(null)
-                .hideAfter(Duration.seconds(3))
-                .position(Pos.BOTTOM_LEFT);
-        notificationBuilder.showConfirm();
-    } */
-
-    public static void handleNotification(String title, String text) {
-        Notifications notificationBuilder = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(null)
-                .hideAfter(Duration.seconds(3))
-                .position(Pos.BOTTOM_LEFT);
-        notificationBuilder.showWarning();
-    }
-
     public void findMatchestWordFromHistory() {
         String wordType = this.searchHistory.getText();
         this.managementHistoryDatabase.findMatchestWord(wordType);
@@ -328,12 +270,12 @@ public class GeneralAppController implements Initializable, InterfaceController 
         this.googleTranslateTab.getStyleClass().add("active");
         BorderPane newBorderPane;
         try {
-            newBorderPane = FXMLLoader.load(HelloApplication.class.getResource("googletranslate.fxml"));
+            newBorderPane = FXMLLoader.load(EnglishAppLauncher.class.getResource("googletranslate.fxml"));
         } catch (IOException exception) {
             throw new RuntimeException();
         }
 
-        this.ChangeMainBorderPane(newBorderPane);
+        this.ChangeController(newBorderPane);
     }
 
     public void loadFavorites() {
@@ -368,7 +310,7 @@ public class GeneralAppController implements Initializable, InterfaceController 
         this.ClearStatusButton();
         this.addToDictTab.getStyleClass().add("active");
         BorderPane newBorderPane;
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("AddController.fxml"));
+        FXMLLoader loader = new FXMLLoader(EnglishAppLauncher.class.getResource("AddController.fxml"));
         try {
             newBorderPane = loader.load();
         } catch (IOException exception) {
@@ -376,7 +318,7 @@ public class GeneralAppController implements Initializable, InterfaceController 
         }
         this.addController = loader.getController();
         this.addController.setMangementDatabase(this.handleManagement);
-        this.ChangeMainBorderPane(newBorderPane);
+        this.ChangeController(newBorderPane);
     }
 
     public void loadChooseGame() {
@@ -386,7 +328,7 @@ public class GeneralAppController implements Initializable, InterfaceController 
         StateMachine.setChooseGame();
         this.ClearStatusButton();
         this.gameTab.getStyleClass().add("active");
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ChooseGame.fxml"));
+        FXMLLoader loader = new FXMLLoader(EnglishAppLauncher.class.getResource("ChooseGame.fxml"));
         BorderPane newBorderPane;
         try {
             newBorderPane = loader.load();
@@ -395,14 +337,14 @@ public class GeneralAppController implements Initializable, InterfaceController 
         }
         ChooseGameController chooseGameController = loader.getController();
         chooseGameController.setGeneralAppController(this);
-        this.ChangeMainBorderPane(newBorderPane);
+        this.ChangeController(newBorderPane);
     }
 
     public void loadChooseGameWithoutCofirm() {
         StateMachine.setChooseGame();
         this.ClearStatusButton();
         this.gameTab.getStyleClass().add("active");
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("ChooseGame.fxml"));
+        FXMLLoader loader = new FXMLLoader(EnglishAppLauncher.class.getResource("ChooseGame.fxml"));
         BorderPane newBorderPane;
         try {
             newBorderPane = loader.load();
@@ -411,12 +353,12 @@ public class GeneralAppController implements Initializable, InterfaceController 
         }
         ChooseGameController chooseGameController = loader.getController();
         chooseGameController.setGeneralAppController(this);
-        this.ChangeMainBorderPane(newBorderPane);
+        this.ChangeController(newBorderPane);
     }
 
     public void loadGuessWordGame() {
         StateMachine.setGame();
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("GuessWordGame.fxml"));
+        FXMLLoader loader = new FXMLLoader(EnglishAppLauncher.class.getResource("GuessWordGame.fxml"));
         BorderPane newBorderPane;
         try {
             newBorderPane = loader.load();
@@ -425,31 +367,42 @@ public class GeneralAppController implements Initializable, InterfaceController 
         }
         this.guessWordGameController = loader.getController();
         this.guessWordGameController.setGeneralAppController(this);
-        this.ChangeMainBorderPane(newBorderPane);
+        this.ChangeController(newBorderPane);
     }
 
     public void loadPlayAgain(int score) {
         StateMachine.setPlayAgain();
-        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("PlayAgain.fxml"));
+        FXMLLoader loader = new FXMLLoader(EnglishAppLauncher.class.getResource("PlayAgain.fxml"));
         BorderPane newBorderPane;
         try {
             newBorderPane = loader.load();
         } catch (IOException exception) {
             throw new RuntimeException();
         }
-        PlayAgainController playAgainController = loader.getController();
-        playAgainController.setGeneralAppController(this);
-        playAgainController.setScore(score);
-        this.ChangeMainBorderPane(newBorderPane);
+        ShowScore showScore = loader.getController();
+        showScore.setGeneralAppController(this);
+        showScore.setScore(score);
+        this.ChangeController(newBorderPane);
 
     }
 
-    public void handleClickOnUkAudio() {
+    public void loadSeacherController() {
+        if (this.confirmBeforeQuitGame() == 0) {
+            return;
+        }
+        StateMachine.setInitAndSeacrch();
+        this.ClearStatusButton();
+        this.searchTab.getStyleClass().add("active");
+        BorderPane newBorderPane;
+        FXMLLoader loader = new FXMLLoader(EnglishAppLauncher.class.getResource("SearchController.fxml"));
+        try {
+            newBorderPane = loader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException();
+        }
+        this.searchController = loader.getController();
+        this.searchController.setGeneralAppController(this);
+        this.ChangeController(newBorderPane);
     }
 
-    public void handleClickOnUsAudio() {
-    }
-
-    public void handleClickOnDelete() {
-    }
 }

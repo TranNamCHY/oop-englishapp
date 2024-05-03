@@ -6,13 +6,9 @@ import java.util.List;
 
 import org.englishapp.englishapp.CustomObject.Word;
 
-public class ManagementDictionaryDatabase {
+public class ManagementDictionaryDatabase extends ManagementDatabase {
 
     private final String PATH_DATABASE = "jdbc:sqlite:src/main/resources/org/englishapp/englishapp/Database/dict_hh.db";
-
-    private Connection sqlConnection;
-
-    private final List<Word> searchResultList;
 
     public ManagementDictionaryDatabase() {
         this.searchResultList = new ArrayList<Word>();
@@ -22,10 +18,6 @@ public class ManagementDictionaryDatabase {
             //throw new SQLException(exception);
             System.out.print(exception.getMessage());
         }
-    }
-
-    public List<Word> getSearchResultList() {
-        return this.searchResultList;
     }
 
 
@@ -85,7 +77,7 @@ public class ManagementDictionaryDatabase {
         }
     }
 
-    public void addWord(String wordType,String wordExplain,String shortDescrip,String prounciation){
+    public void addWord(String wordType, String wordExplain, String shortDescrip, String prounciation) {
         String sql = "INSERT INTO av(word,html,description,pronounce) VALUES(?,?,?,?)";
 
         PreparedStatement preparedStatement;

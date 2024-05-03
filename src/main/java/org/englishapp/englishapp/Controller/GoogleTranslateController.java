@@ -5,8 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
-import org.englishapp.englishapp.utils.GoogleTranslateAPI;
-import org.englishapp.englishapp.utils.GoogleTranslatePictureAPI;
+import org.englishapp.englishapp.utility.GoogleTranslateAPI;
+import org.englishapp.englishapp.utility.GoogleTranslatePictureAPI;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,31 +14,35 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeoutException;
 
-public class GoogleTranslateController implements Initializable {
+public class GoogleTranslateController implements Initializable, InterfaceController {
 
     @FXML
-    TextArea rightTextArea;
+    private TextArea rightTextArea;
 
     @FXML
-    TextArea leftTextArea;
+    private TextArea leftTextArea;
 
     @FXML
-    ChoiceBox firstLanguageChoiceBox;
+    private ChoiceBox firstLanguageChoiceBox;
 
     @FXML
-    ChoiceBox secondLanguageChoiceBox;
+    private ChoiceBox secondLanguageChoiceBox;
 
     private final String[] sourceLanguage = {"English", "Vietnamese", "Auto"};
     private final String[] destLanguage = {"English", "Vietnamese"};
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        StateMachine.setGoogleTranslate();
+        this.setState();
         this.firstLanguageChoiceBox.getItems().addAll(this.sourceLanguage);
         this.firstLanguageChoiceBox.setValue(sourceLanguage[0]);
         this.secondLanguageChoiceBox.getItems().addAll(this.destLanguage);
         this.secondLanguageChoiceBox.setValue(destLanguage[1]);
+    }
+
+    @Override
+    public void setState() {
+        StateMachine.setGoogleTranslate();
     }
 
     public void handleDuplicateChoice1() {
@@ -115,24 +119,21 @@ public class GoogleTranslateController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.PNG", "*.jpeg"));
         File selectedFile = fileChooser.showOpenDialog(null);
-        if(selectedFile == null){
+        if (selectedFile == null) {
             return;
         }
         String imagePath = selectedFile.getAbsolutePath();
         String scannedText = "";
-        try{
+        try {
             scannedText = GoogleTranslatePictureAPI.processImage(new File(imagePath));
-        }
-        catch (IOException exception){
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        } catch (TimeoutException exception) {
             exception.printStackTrace();
         }
-        catch (TimeoutException exception){
-            exception.printStackTrace();
-        }
-        if(scannedText != null){
+        if (scannedText != null) {
             this.leftTextArea.setText(scannedText);
-        }
-        else {
+        } else {
             this.leftTextArea.setText("Some Error with GoogleTranslatePicture api");
         }
     }

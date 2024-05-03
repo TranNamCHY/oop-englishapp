@@ -1,6 +1,6 @@
 package org.englishapp.englishapp.CustomObject;
 
-public class Word  implements Comparable<Word>{
+public class Word  {
     private String wordType;
 
     private String htmlType;
@@ -26,8 +26,4 @@ public class Word  implements Comparable<Word>{
         this.htmlType = htmlType;
     }
 
-    @Override
-    public int compareTo(Word o){
-        return this.wordType.compareTo(o.getWordType());
-    }
 }

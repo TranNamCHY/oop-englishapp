@@ -21,13 +21,10 @@ import org.englishapp.englishapp.Management.ManagementDictionaryDatabase;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddController implements Initializable {
+public class AddController implements Initializable, InterfaceController {
 
     @FXML
     private TextArea wordField;
-
-    @FXML
-    private Button addButton;
 
     @FXML
     private TextArea pronunciationField;
@@ -45,10 +42,16 @@ public class AddController implements Initializable {
     private String rawHTML = "";
     @Override
     public void initialize(URL location, ResourceBundle resources){
+        this.setState();
         this.rawHTML = "<h1>%s</h1><h3><i>/%s/</i></h3><h2></h2><ul><li>%s</li></ul>";
     }
 
-    public static void handleNotification(String title,String text) {
+    @Override
+    public void setState() {
+        StateMachine.setAddNewWord();
+    }
+
+    public static void handleNotification(String title, String text) {
         Notifications notificationBuilder = Notifications.create()
                 .title(title)
                 .text(text)
@@ -96,16 +99,11 @@ public class AddController implements Initializable {
             return;
         }
         String wordField =  this.wordField.getText().trim();
-        /* String explainField = this.explainField.getHtmlText().replace(" dir=\"ltr\"><head></head" +
-                "><body contenteditable=\"true\">", ">");
-        explainField = explainField.replace("</body>", "");
-        explainField = explainField.replace("<html>", "");
-        explainField = explainField.replace("</html>", ""); */
         String shortDescrip = shortDescArea.getText();
         String prounciation = pronunciationField.getText();
         String explainField = String.format("<h1>%s</h1><h3><i>/%s/</i></h3><h2></h2><ul><li>%s</li></ul>",
         wordField,prounciation,shortDescrip);
-        this.displayAlert("Cofirm","Are you sure ?");
+        this.displayAlert("Cofirm","Do you want to add this word ?");
         if(this.buttonYesStatus == 1) {
             this.managementDictionaryDatabase.addWord(wordField, explainField, shortDescrip, prounciation);
             handleSuccessNotification();
@@ -114,7 +112,6 @@ public class AddController implements Initializable {
     }
 
     private void clearFields(){
-        //this.rawHTML = "";
         this.wordField.setText("");
         this.explainField.setHtmlText("");
         this.pronunciationField.setText("");

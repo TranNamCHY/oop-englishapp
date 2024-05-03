@@ -3,15 +3,32 @@ package org.englishapp.englishapp.Management;
 import org.englishapp.englishapp.CustomObject.Word;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public abstract class ManagementDatabase {
-    private Connection sqlConnection;
+    protected Connection sqlConnection;
 
-    private final List<Word> searchResultList;
+    protected List<Word> searchResultList;
 
     public ManagementDatabase() {
         this.searchResultList = null;
+    }
+
+    public Connection getSqlConnection() {
+        return this.sqlConnection;
+    }
+
+    public void setSqlConnection(Connection sqlConnection) {
+        this.sqlConnection = sqlConnection;
+    }
+
+    public List<Word> getSearchResultList() {
+        return this.searchResultList;
+    }
+
+    public void setSearchResultList(List<Word> wordList) {
+        this.searchResultList = wordList;
     }
 
     public abstract Word findWord(String wordType);
@@ -20,6 +37,8 @@ public abstract class ManagementDatabase {
 
     public abstract void findMatchestWord(String wordType);
 
-    public abstract void addWord(String wordType,String wordExplain,String shortDescrip,String prounciation);
+    public void addWord(String wordType, String wordExplain, String shortDescrip, String prounciation) {
+    }
+
 
 }

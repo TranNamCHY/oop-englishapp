@@ -21,19 +21,24 @@
             <top>
                 <HBox prefHeight="100.0" prefWidth="1300.0" style="-fx-background-color: #272f4f;" BorderPane.alignment="CENTER">
                     <children>
-                        <ImageView fitHeight="70.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" translateY="20.0">
+                        <ImageView fitHeight="108.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" translateX="15.0">
                             <image>
-                                <Image url="@icons/decoration/title.png" />
+                                <Image url="@icons/decoration/148.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fitHeight="52.0" fitWidth="394.0" pickOnBounds="true" preserveRatio="true" translateX="40.0" translateY="27.0">
+                            <image>
+                                <Image url="@icons/decoration/Dictionary_com_Logo.jpg" />
                             </image>
                             <HBox.margin>
                                 <Insets left="8.0" top="5.0" />
                             </HBox.margin>
                         </ImageView>
-                        <Pane prefHeight="110.0" prefWidth="806.0">
+                        <Pane prefHeight="110.0" prefWidth="806.0" translateX="-22.0">
                             <children>
-                                <TextField fx:id="searchBar" layoutX="123.0" layoutY="29.0" onKeyPressed="#checkIfEnterTyped" onKeyTyped="#findMatchestWord" onMousePressed="#disableListView" prefHeight="60.0" prefWidth="547.0" style="-fx-font-family: Arial; -fx-font-size: 20px;">
+                                <TextField fx:id="searchBar" layoutX="121.0" layoutY="29.0" onKeyPressed="#checkIfEnterTyped" onKeyTyped="#findMatchestWord" onMousePressed="#disableListView" prefHeight="60.0" prefWidth="566.0" style="-fx-font-family: Arial; -fx-font-size: 20px;">
                                 </TextField>
-                                <Button fx:id="searchTab" alignment="BASELINE_LEFT" graphicTextGap="42.0" layoutX="674.0" layoutY="20.0" mnemonicParsing="false" onAction="#startSearch" prefHeight="68.0" prefWidth="49.0" styleClass="search-button" stylesheets="@icons/css/tab-buttons.css">
+                                <Button fx:id="searchTab" alignment="BASELINE_LEFT" graphicTextGap="42.0" layoutX="682.0" layoutY="20.0" mnemonicParsing="false" onAction="#startSearch" prefHeight="78.0" prefWidth="67.0" styleClass="search-button" stylesheets="@icons/css/tab-buttons.css">
                                     <font>
                                         <Font name="System Bold" size="16.0" />
                                     </font>
@@ -55,177 +60,119 @@
             </top>
             <right>
                 <BorderPane fx:id="mainBorderPane" prefHeight="650.0" prefWidth="1076.0" BorderPane.alignment="CENTER">
-                    <top>
-
-                    </top>
-                    <top>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                            <children>
-                                <HBox alignment="TOP_CENTER" prefHeight="150.0" prefWidth="609.0">
-                                    <children>
-                                        <HBox prefHeight="150.0" prefWidth="376.0" translateX="-70.0">
-                                            <children>
-                                                <StackPane onMouseClicked="#handleClickOnUkAudio" prefHeight="150.0" prefWidth="93.0" styleClass="utility-button" stylesheets="@icons/css/utility-button.css">
-                                                    <children>
-                                                        <ImageView fitHeight="67.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true">
-                                                            <image>
-                                                                <Image url="@icons/utilities/audioUK.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </StackPane>
-                                                <StackPane onMouseClicked="#handleClickOnUsAudio" prefHeight="151.0" prefWidth="92.0" styleClass="utility-button" stylesheets="@icons/css/utility-button.css">
-                                                    <children>
-                                                        <ImageView fitHeight="62.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                                            <image>
-                                                                <Image url="@icons/utilities/audioUS.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </StackPane>
-                                                <StackPane onMouseClicked="#handleClickOnSave" prefHeight="150.0" prefWidth="93.0" styleClass="utility-button" stylesheets="@icons/css/utility-button.css">
-                                                    <children>
-                                                        <ImageView fitHeight="70.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
-                                                            <image>
-                                                                <Image url="@icons/utilities/save.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </StackPane>
-                                                <StackPane onMouseClicked="#handleClickOnDelete" prefHeight="150.0" prefWidth="88.0" styleClass="utility-button" stylesheets="@icons/css/utility-button.css">
-                                                    <children>
-                                                        <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                                                            <image>
-                                                                <Image url="@icons/utilities/delete_forever.png" />
-                                                            </image>
-                                                        </ImageView>
-                                                    </children>
-                                                </StackPane>
-                                            </children>
-                                        </HBox>
-                                        <ListView fx:id="showMatchestWord" onContextMenuRequested="#handleChosenFromMenu" prefHeight="150.0" prefWidth="561.0" style="-fx-font-family: Arial; -fx-font-size: 16px;" translateX="-75.0" visible="false">
-                                        </ListView>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </StackPane>
-                    </top>
-               <bottom>
-                        <WebView fx:id="displaySearchResult" prefHeight="500.0" prefWidth="1034.0" BorderPane.alignment="CENTER" />
-               </bottom>
                 </BorderPane>
             </right>
             <left>
                 <StackPane prefHeight="650.0" prefWidth="226.0" BorderPane.alignment="CENTER">
-                    <ListView fx:id="historyList" onContextMenuRequested="#chooseFromHistoryList" prefHeight="528.0" prefWidth="200.0" style="-fx-font-family: Arial; -fx-font-size: 16px;" translateY="26.0" visible="false" styleClass="game-rule-label" stylesheets="@icons/css/label.css">
+                    <ListView fx:id="historyList" onContextMenuRequested="#chooseFromHistoryList" prefHeight="528.0" prefWidth="200.0" style="-fx-font-family: Arial; -fx-font-size: 16px;" styleClass="game-rule-label" stylesheets="@icons/css/label.css" translateY="26.0" visible="false">
                     </ListView>
-               <TextField fx:id="searchHistory" onKeyTyped="#findMatchestWordFromHistory" prefHeight="26.0" prefWidth="213.0" StackPane.alignment="TOP_CENTER">
+                    <TextField fx:id="searchHistory" onKeyTyped="#findMatchestWordFromHistory" prefHeight="26.0" prefWidth="213.0" StackPane.alignment="TOP_CENTER">
 
-               </TextField>
-               <VBox fx:id="fatherLeftPaneTab" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
-                  <children>
-                     <Pane fx:id="LeftPaneTab" prefHeight="476.0" prefWidth="182.0" style="-fx-background-color: #272f4f; -fx-background-radius: 0 20 20 0" translateX="0" translateY="20.0">
+                    </TextField>
+                    <VBox fx:id="fatherLeftPaneTab" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
                         <children>
-                           <Button fx:id="googleTranslateTab" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="3.0" layoutY="47.0" mnemonicParsing="false" onAction="#loadGoogleTranslate" prefHeight="40.0" prefWidth="187.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Google Translate" textFill="WHITE">
-                              <font>
-                                 <Font name="System Bold" size="15.0" />
-                              </font>
-                              <graphic>
-                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                       <Image url="@icons/tabs/g_translate.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                              <padding>
-                                 <Insets left="10.0" />
-                              </padding>
-                              <VBox.margin>
-                                 <Insets left="10.0" right="10.0" top="15.0" />
-                              </VBox.margin>
-                           </Button>
-                           <Button fx:id="favoritesTab" alignment="BASELINE_LEFT" graphicTextGap="32.0" layoutX="3.0" layoutY="117.0" mnemonicParsing="false" onAction="#loadFavorites" prefHeight="40.0" prefWidth="187.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Favorites" textFill="WHITE">
-                              <font>
-                                 <Font name="System Bold" size="16.0" />
-                              </font>
-                              <graphic>
-                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                       <Image url="@icons/tabs/kid_star.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                              <padding>
-                                 <Insets left="10.0" />
-                              </padding>
-                              <VBox.margin>
-                                 <Insets left="10.0" right="10.0" top="15.0" />
-                              </VBox.margin>
-                           </Button>
-                           <Button fx:id="addToDictTab" alignment="BASELINE_LEFT" graphicTextGap="22.0" layoutX="3.0" layoutY="186.0" mnemonicParsing="false" onAction="#loadAddToDict" prefHeight="40.0" prefWidth="186.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Add to Dict." textFill="WHITE">
-                              <font>
-                                 <Font name="System Bold" size="16.0" />
-                              </font>
-                              <graphic>
-                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                       <Image url="@icons/tabs/add.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                              <padding>
-                                 <Insets left="10.0" />
-                              </padding>
-                           </Button>
-                           <Button fx:id="historyTab" alignment="BASELINE_LEFT" graphicTextGap="38.0" layoutX="3.0" layoutY="255.0" mnemonicParsing="false" onAction="#loadHistory" prefHeight="40.0" prefWidth="185.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="History" textFill="WHITE">
-                              <font>
-                                 <Font name="System Bold" size="16.0" />
-                              </font>
-                              <graphic>
-                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                       <Image url="@icons/tabs/history.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                              <padding>
-                                 <Insets left="10.0" />
-                              </padding>
-                           </Button>
-                           <Button fx:id="gameTab" alignment="BASELINE_LEFT" graphicTextGap="43.0" layoutX="3.0" layoutY="325.0" mnemonicParsing="false" onAction="#loadChooseGame" prefHeight="40.0" prefWidth="185.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Game" textFill="WHITE">
-                              <font>
-                                 <Font name="System Bold" size="16.0" />
-                              </font>
-                              <graphic>
-                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                       <Image url="@icons/tabs/game.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                              <padding>
-                                 <Insets left="10.0" />
-                              </padding>
-                           </Button>
+                            <Pane fx:id="LeftPaneTab" prefHeight="476.0" prefWidth="182.0" style="-fx-background-color: #272f4f; -fx-background-radius: 0 20 20 0" translateX="0" translateY="20.0">
+                                <children>
+                                    <Button fx:id="googleTranslateTab" alignment="BASELINE_LEFT" graphicTextGap="10.0" layoutX="3.0" layoutY="47.0" mnemonicParsing="false" onAction="#loadGoogleTranslate" prefHeight="40.0" prefWidth="187.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Google Translate" textFill="WHITE">
+                                        <font>
+                                            <Font name="System Bold" size="15.0" />
+                                        </font>
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/tabs/g_translate.png" />
+                                                </image>
+                                            </ImageView>
+                                        </graphic>
+                                        <padding>
+                                            <Insets left="10.0" />
+                                        </padding>
+                                        <VBox.margin>
+                                            <Insets left="10.0" right="10.0" top="15.0" />
+                                        </VBox.margin>
+                                    </Button>
+                                    <Button fx:id="favoritesTab" alignment="BASELINE_LEFT" graphicTextGap="32.0" layoutX="3.0" layoutY="117.0" mnemonicParsing="false" onAction="#loadFavorites" prefHeight="40.0" prefWidth="187.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Favorites" textFill="WHITE">
+                                        <font>
+                                            <Font name="System Bold" size="16.0" />
+                                        </font>
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/tabs/kid_star.png" />
+                                                </image>
+                                            </ImageView>
+                                        </graphic>
+                                        <padding>
+                                            <Insets left="10.0" />
+                                        </padding>
+                                        <VBox.margin>
+                                            <Insets left="10.0" right="10.0" top="15.0" />
+                                        </VBox.margin>
+                                    </Button>
+                                    <Button fx:id="addToDictTab" alignment="BASELINE_LEFT" graphicTextGap="22.0" layoutX="3.0" layoutY="186.0" mnemonicParsing="false" onAction="#loadAddToDict" prefHeight="40.0" prefWidth="186.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Add to Dict." textFill="WHITE">
+                                        <font>
+                                            <Font name="System Bold" size="16.0" />
+                                        </font>
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/tabs/add.png" />
+                                                </image>
+                                            </ImageView>
+                                        </graphic>
+                                        <padding>
+                                            <Insets left="10.0" />
+                                        </padding>
+                                    </Button>
+                                    <Button fx:id="historyTab" alignment="BASELINE_LEFT" graphicTextGap="38.0" layoutX="3.0" layoutY="255.0" mnemonicParsing="false" onAction="#loadHistory" prefHeight="40.0" prefWidth="185.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="History" textFill="WHITE">
+                                        <font>
+                                            <Font name="System Bold" size="16.0" />
+                                        </font>
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/tabs/history.png" />
+                                                </image>
+                                            </ImageView>
+                                        </graphic>
+                                        <padding>
+                                            <Insets left="10.0" />
+                                        </padding>
+                                    </Button>
+                                    <Button fx:id="gameTab" alignment="BASELINE_LEFT" graphicTextGap="43.0" layoutX="3.0" layoutY="325.0" mnemonicParsing="false" onAction="#loadChooseGame" prefHeight="40.0" prefWidth="185.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" text="Game" textFill="WHITE">
+                                        <font>
+                                            <Font name="System Bold" size="16.0" />
+                                        </font>
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@icons/tabs/game.png" />
+                                                </image>
+                                            </ImageView>
+                                        </graphic>
+                                        <padding>
+                                            <Insets left="10.0" />
+                                        </padding>
+                                    </Button>
+                                </children>
+                            </Pane>
                         </children>
-                     </Pane>
-                  </children>
-               </VBox>
-               <Button fx:id="ShowMenu" mnemonicParsing="false" onAction="#HideMenu" prefHeight="36.0" prefWidth="61.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" translateX="-88.0" translateY="110.0">
-                  <font>
-                     <Font name="System Bold" size="16.0" />
-                  </font>
-                  <padding>
-                     <Insets left="10.0" />
-                  </padding>
-                  <graphic>
-                     <ImageView fx:id="HideMenuImage" fitHeight="38.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" visible="true">
-                        <image>
-                           <Image url="@icons/tabs/exit.png" />
-                        </image>
-                     </ImageView>
-                  </graphic>
-               </Button>
+                    </VBox>
+                    <Button fx:id="ShowMenu" mnemonicParsing="false" onAction="#HideMenu" prefHeight="36.0" prefWidth="61.0" styleClass="tab-button" stylesheets="@icons/css/tab-buttons.css" translateX="-88.0" translateY="110.0">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                        <graphic>
+                            <ImageView fx:id="HideMenuImage" fitHeight="38.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" visible="true">
+                                <image>
+                                    <Image url="@icons/tabs/exit.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
                 </StackPane>
             </left>
         </BorderPane>
